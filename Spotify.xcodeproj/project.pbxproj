@@ -29,6 +29,7 @@
 		13189BF22878B33F0042DFC7 /* AudioTrack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13189BF12878B33F0042DFC7 /* AudioTrack.swift */; };
 		13189BF42878B3470042DFC7 /* Artist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13189BF32878B3470042DFC7 /* Artist.swift */; };
 		13189BF62878B3500042DFC7 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13189BF52878B3500042DFC7 /* Profile.swift */; };
+		136511E0287C6FA0004CA8C1 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 136511DF287C6FA0004CA8C1 /* Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -56,6 +57,7 @@
 		13189BF12878B33F0042DFC7 /* AudioTrack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioTrack.swift; sourceTree = "<group>"; };
 		13189BF32878B3470042DFC7 /* Artist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Artist.swift; sourceTree = "<group>"; };
 		13189BF52878B3500042DFC7 /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
+		136511DF287C6FA0004CA8C1 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -150,6 +152,7 @@
 				13189BB92878B0300042DFC7 /* AppDelegate.swift */,
 				13189BBB2878B0300042DFC7 /* SceneDelegate.swift */,
 				13189BC22878B0310042DFC7 /* Assets.xcassets */,
+				136511DF287C6FA0004CA8C1 /* Extensions.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -262,6 +265,7 @@
 				13189BBE2878B0300042DFC7 /* HomeViewController.swift in Sources */,
 				13189BDC2878B2A40042DFC7 /* AuthViewController.swift in Sources */,
 				13189BBA2878B0300042DFC7 /* AppDelegate.swift in Sources */,
+				136511E0287C6FA0004CA8C1 /* Extensions.swift in Sources */,
 				13189BD82878B2810042DFC7 /* LibraryViewController.swift in Sources */,
 				13189BF42878B3470042DFC7 /* Artist.swift in Sources */,
 				13189BE62878B2E50042DFC7 /* PlaylistViewController.swift in Sources */,
