@@ -11,9 +11,11 @@ import Foundation
 final class AuthManager {
     static let shared = AuthManager()
     
+    private var refreshingToken = false
+    
     struct Constants {
-        static let clientID = "28c6b30fbd5b4eca9185ce93e8d984a3"
-        static let clientScret = "9cee630ee58943b7926a0fd0fc81457f"
+        static let clientID = "dc74ab6f93954eb0ab7d825e283b69b4"
+        static let clientScret = "9059b485952f4a20b5cc8669b4f50a3a"
         static let tokenAPIURL = "https://accounts.spotify.com/api/token"
         static  let redirectURI = "https://www.iosacademy.io"
         static let scopes = "user-read-private%20playlist-modify-public%20playlist-read-private%20playlist-modify-private%20user-follow-read%20user-library-modify%20user-library-read%20user-read-email"
@@ -23,7 +25,7 @@ final class AuthManager {
     
     public var signInURL: URL? {
         
-       
+        
         let base = "https://accounts.spotify.com/authorize"
         let string = "\(base)?response_type=code&client_id=\(Constants.clientID)&scope=\(Constants.scopes)&redirect_uri=\(Constants.redirectURI)&show_dialog=TRUE"
         return URL(string: string)
@@ -104,7 +106,33 @@ final class AuthManager {
         task.resume()
     }
     
+    private var onRefreshBlocks = [((String) -> Void)]()
+    
+    // Supplies valid token to be used when API calls
+    public func withValidToken(completion: @escaping (String) -> Void) {
+        guard !refreshingToken else {
+            //Append the completion
+            onRefreshBlocks.append(completion)
+            return
+        }
+        
+        if shouldRefreshToken {
+            // Refresh
+            refreshIfNeeded { [weak self] success in
+                if let token = self?.accessToken, success {
+                    completion(token)
+                }
+            }
+        } else if let token = accessToken {
+            completion(token)
+        }
+    }
+    
     public func refreshIfNeeded(completion: @escaping (Bool) -> Void) {
+        guard !refreshingToken else {
+            return
+        }
+        
         guard shouldRefreshToken else {
             completion(true)
             return
@@ -115,6 +143,8 @@ final class AuthManager {
         
         // Refresh the token
         guard let url = URL(string: Constants.tokenAPIURL) else { return }
+        
+        refreshingToken = true
         
         var components = URLComponents()
         components.queryItems = [
@@ -140,6 +170,7 @@ final class AuthManager {
         request.setValue("Basic \(base64String)", forHTTPHeaderField: "Authorization")
         
         let task = URLSession.shared.dataTask(with: request) { [weak self] data, _, error in
+            self?.refreshingToken = false
             guard let data = data, error == nil else {
                 completion(false)
                 return
@@ -147,7 +178,8 @@ final class AuthManager {
             
             do {
                 let result = try JSONDecoder().decode(AuthResponse.self, from: data)
-                print("Successfully refreshed!")
+                self?.onRefreshBlocks.forEach { $0(result.access_token) }
+                self?.onRefreshBlocks.removeAll()
                 self?.cacheToken(result: result)
                 completion(true)
             } catch {
@@ -156,7 +188,7 @@ final class AuthManager {
             }
         }
         task.resume()
-
+        
     }
     
     private func cacheToken(result: AuthResponse) {
